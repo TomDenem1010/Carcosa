@@ -9,9 +9,9 @@
 		<relativePath/>
 	</parent>
 	<groupId>com.home</groupId>
-	<artifactId>hastur</artifactId>
+	<artifactId>carcosa</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>hastur</name>
+	<name>carcosa</name>
 
 	<properties>
 		<java.version>21</java.version>

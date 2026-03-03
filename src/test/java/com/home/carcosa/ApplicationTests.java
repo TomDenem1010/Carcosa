@@ -1,10 +1,10 @@
-package com.home.hastur;
+package com.home.carcosa;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class HasturApplicationTests{
+class ApplicationTests{
 
     @Test
     void contextLoads(){

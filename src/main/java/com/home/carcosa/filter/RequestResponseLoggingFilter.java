@@ -1,4 +1,4 @@
-package com.home.hastur.filter;
+package com.home.carcosa.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -18,7 +18,7 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
-@Slf4j(topic = "HASTUR")
+@Slf4j(topic = "FILTER")
 public class RequestResponseLoggingFilter extends OncePerRequestFilter{
 
     private static final int MAX_PAYLOAD_BYTES = 1024 * 1024;

@@ -7,7 +7,7 @@
         </encoder>
     </appender>
 
-    <logger name="HASTUR" level="DEBUG" additivity="false">
+    <logger name="FILTER" level="DEBUG" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
 

@@ -1,7 +1,7 @@
-package com.home.hastur.controller;
+package com.home.carcosa.controller;
 
-import com.home.hastur.dto.AboutResponse;
-import com.home.hastur.service.AboutService;
+import com.home.carcosa.dto.AboutResponse;
+import com.home.carcosa.service.AboutService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
