@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.home</groupId>
 	<artifactId>carcosa</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>carcosa</name>
 
 	<properties>
