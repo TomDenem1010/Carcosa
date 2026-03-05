@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+#SETUP
         -   name: Checkout
             uses: actions/checkout@v4
 
@@ -32,7 +33,7 @@ jobs:
                 echo "version=${version}" >> "$GITHUB_OUTPUT"
                 echo "timestamp=${timestamp}" >> "$GITHUB_OUTPUT"
                 echo "tag=${version}-${timestamp}" >> "$GITHUB_OUTPUT"
-
+#DOCKER
         -   name: Set up Docker Buildx
             uses: docker/setup-buildx-action@v3
 
@@ -49,4 +50,26 @@ jobs:
                 file: ./Dockerfile
                 push: true
                 tags: ${{ secrets.DOCKERHUB_USERNAME }}/carcosa:${{ steps.tag.outputs.tag }}
+#KUBERNETES
+        -   name: Configure AWS credentials
+            uses: aws-actions/configure-aws-credentials@v4
+            with:
+                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                aws-region: ${{ secrets.AWS_REGION }}
+
+        -   name: Login to Amazon ECR
+            id: ecr
+            uses: aws-actions/amazon-ecr-login@v2
+
+        -   name: Configure kubectl
+            run: |
+                aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name carcosa
+
+        -   name: Update image tag in manifest
+            run: |
+                sed -i "s|IMAGE_TAG|${{ steps.tag.outputs.tag }}|g" kubernetes/carcosa.yaml
                 
+        -   name: Deploy to Kubernetes
+            run: |
+                kubectl apply -f kubernetes/carcosa.yaml

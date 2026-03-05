@@ -30,6 +30,6 @@ spec:
         spec:
             containers:
                 - name: carcosa
-                  image: tomdenem1010/carcosa:0.0.1-20260305064804
+                  image: tomdenem1010/carcosa:IMAGE_TAG
                   ports:
                       - containerPort: 1895
