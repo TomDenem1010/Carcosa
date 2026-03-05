@@ -63,6 +63,7 @@ jobs:
         -   name: Update chart appVersion
             run: |
                 sed -i "s/appVersion:.*/appVersion: \"${{ steps.tag.outputs.tag }}\"/" helm/carcosa/Chart.yaml
+                sed -i "s/version:.*/version: \"${{ steps.tag.outputs.tag }}\"/" helm/carcosa/Chart.yaml
 
         -   name: Package chart
             run: helm package helm/carcosa
