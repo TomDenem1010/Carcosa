@@ -1,4 +1,4 @@
-name: Build and push Docker image
+name: Build and deploy Carcosa
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "25"
+          java-version: "21"
 
       - name: Compute image tag
         id: tag
@@ -48,3 +48,19 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/carcosa:${{ steps.tag.outputs.tag }}
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+	
+      - name: Login to GHCR
+        run: echo "${{ secrets.CARCOSA_TOKEN }}" | helm registry login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Update chart appVersion
+        run: |
+          sed -i "s/appVersion:.*/appVersion: \"${{ steps.tag.outputs.tag }}\"/" helm/carcosa/Chart.yaml
+
+      - name: Package chart
+        run: helm package helm/carcosa
+
+      - name: Push chart
+        run: helm push *.tgz oci://ghcr.io/${{ github.repository_owner }}/charts
