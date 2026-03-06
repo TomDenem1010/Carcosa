@@ -32,7 +32,8 @@ jobs:
 
         -   name: Decode config 
             run: | 
-                echo "${{ secrets.SECRET_PROPERTIES }}" | base64 -d > /secret/application-secret.properties
+                mkdir -p secret
+                echo "${{ secrets.SECRET_PROPERTIES }}" | base64 -d > secret/application-secret.properties
 #DOCKER
         -   name: Set up Docker Buildx
             uses: docker/setup-buildx-action@v3
@@ -72,4 +73,5 @@ jobs:
                 
         -   name: Deploy to Kubernetes
             run: |
+                kubectl create secret generic carcosa-secret-config --from-file=application-secret.properties=secret/application-secret.properties --dry-run=client -o yaml | kubectl apply -f -
                 kubectl apply -f kubernetes/carcosa.yaml
