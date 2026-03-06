@@ -3,6 +3,7 @@ kind: Service
 metadata:
     name: carcosa
     annotations:
+        service.beta.kubernetes.io/aws-load-balancer-attributes: load_balancing.cross_zone.enabled=true
         service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
         service.beta.kubernetes.io/aws-load-balancer-subnets: subnet-0ecb92c7f77bcde5d,subnet-0166cbe7bf8dba2ef
         service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
