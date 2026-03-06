@@ -7,6 +7,10 @@
         </encoder>
     </appender>
 
+    <logger name="USER" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
     <logger name="FILTER" level="DEBUG" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>

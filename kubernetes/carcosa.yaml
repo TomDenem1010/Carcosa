@@ -31,5 +31,13 @@ spec:
             containers:
                 - name: carcosa
                   image: tomdenem1010/carcosa:IMAGE_TAG
+                  volumeMounts:
+                      - name: carcosa-secret-config
+                        mountPath: /app/secret
+                        readOnly: true
                   ports:
                       - containerPort: 1895
+            volumes:
+                - name: carcosa-secret-config
+                  secret:
+                      secretName: carcosa-secret-config
