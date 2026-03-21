@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Local Oracle XE (dev) ###
+database/.env
+database/oradata/*
