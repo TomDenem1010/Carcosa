@@ -35,3 +35,5 @@ build/
 ### Local Oracle XE (dev) ###
 database/.env
 database/oradata/*
+
+.env
