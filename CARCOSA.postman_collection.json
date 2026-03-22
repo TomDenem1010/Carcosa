@@ -20,7 +20,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"groupId\": \"1\",\r\n    \"boardgameId\":\"2\"\r\n}",
+                  "raw": "{\r\n    \"groupId\": \"1\",\r\n    \"boardgameId\":\"4\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -105,7 +105,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"boardgameId\": \"2\",\r\n    \"playDate\": \"2026-03-21\",\r\n    \"playerCount\": \"4\",\r\n    \"win\": \"SUCCESS\",\r\n    \"funScore\": \"4\"\r\n}",
+                  "raw": "{\r\n    \"boardgameId\": \"4\",\r\n    \"playDate\": \"2026-03-21\",\r\n    \"playerCount\": \"4\",\r\n    \"win\": \"FAILURE\",\r\n    \"funScore\": \"4\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -129,13 +129,42 @@
           ]
         },
         {
+          "name": "admin/boardgame",
+          "item": [
+            {
+              "name": "New Request",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\":\"DreamEscape: Ooth Nargai Realm Expansion\",\r\n    \"type\":\"EXPANSION\",\r\n    \"status\":\"OWN\",\r\n    \"bggLink\":\"https://boardgamegeek.com/boardgameexpansion/460296/dreamescape-ooth-nargai-realm-expansion\"\r\n}"
+                },
+                "url": {
+                  "raw": "localhost:1515/admin/boardgame/exportToCsv",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "1515",
+                  "path": [
+                    "admin",
+                    "boardgame",
+                    "exportToCsv"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
           "name": "/boardgame/save",
           "request": {
             "method": "POST",
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"name\":\"The Crew: Mission Deep Sea\",\r\n    \"type\":\"BASE_GAME\",\r\n    \"status\":\"OWN\",\r\n    \"bggLink\":\"https://boardgamegeek.com/boardgame/324856/the-crew-mission-deep-sea\"\r\n}",
+              "raw": "{\r\n    \"name\":\"Courtisans\",\r\n    \"type\":\"BASEGAME\",\r\n    \"status\":\"OWN\",\r\n    \"bggLink\":\"https://boardgamegeek.com/boardgame/402283/courtisans\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
