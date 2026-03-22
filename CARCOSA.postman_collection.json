@@ -129,10 +129,34 @@
           ]
         },
         {
-          "name": "admin/boardgame",
+          "name": "admin",
           "item": [
             {
-              "name": "New Request",
+              "name": "/boardgame/exportToCsv",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\":\"DreamEscape: Ooth Nargai Realm Expansion\",\r\n    \"type\":\"EXPANSION\",\r\n    \"status\":\"OWN\",\r\n    \"bggLink\":\"https://boardgamegeek.com/boardgameexpansion/460296/dreamescape-ooth-nargai-realm-expansion\"\r\n}"
+                },
+                "url": {
+                  "raw": "localhost:1515/admin/boardgame/exportToCsv",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "1515",
+                  "path": [
+                    "admin",
+                    "boardgame",
+                    "exportToCsv"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "/boardgame/importFromCsv",
               "request": {
                 "method": "POST",
                 "header": [],

@@ -21,7 +21,10 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class BoardgameTableCsvImportService {
@@ -41,24 +44,32 @@ public class BoardgameTableCsvImportService {
 
     @Transactional
     public void importFromCsv(Path inputDirectory) throws IOException {
-        importBoardgame(inputDirectory.resolve("boardgame.csv"));
-        importBoardgameGroup(inputDirectory.resolve("boardgame_group.csv"));
-        importBoardgamePlay(inputDirectory.resolve("boardgame_play.csv"));
+        Map<Long, String> csvBoardgameIdToBggLink = importBoardgame(inputDirectory.resolve("boardgame.csv"));
+        Map<String, Long> bggLinkToBoardgameId = loadBoardgameIdByBggLink();
+
+        importBoardgameGroup(inputDirectory.resolve("boardgame_group.csv"), csvBoardgameIdToBggLink,
+                bggLinkToBoardgameId);
+        importBoardgamePlay(inputDirectory.resolve("boardgame_play.csv"), csvBoardgameIdToBggLink,
+                bggLinkToBoardgameId);
     }
 
-    private void importBoardgame(Path csvFile) throws IOException {
+    private Map<Long, String> importBoardgame(Path csvFile) throws IOException {
         List<List<String>> records = readCsvFile(csvFile);
         List<Boardgame> toSave = new ArrayList<>(records.size());
+        Map<Long, String> csvIdToBggLink = new HashMap<>(Math.max(16, records.size()));
 
         for (List<String> row : records) {
             requireColumns(csvFile, row, 7);
 
+            Long csvId = parseLong(row.get(0));
             String name = row.get(1);
             BoardgameType type = parseEnum(BoardgameType.class, row.get(2));
             BoardgameStatus status = parseEnum(BoardgameStatus.class, row.get(3));
             String bggLink = row.get(4);
             LocalDateTime createdAt = parseLocalDateTime(row.get(5));
             LocalDateTime updatedAt = parseLocalDateTime(row.get(6));
+
+            csvIdToBggLink.put(csvId, bggLink);
 
             toSave.add(Boardgame.builder()
                     .id(null)
@@ -74,9 +85,14 @@ public class BoardgameTableCsvImportService {
         if (!toSave.isEmpty()) {
             boardgameRepository.saveAll(toSave);
         }
+
+        return csvIdToBggLink;
     }
 
-    private void importBoardgameGroup(Path csvFile) throws IOException {
+    private void importBoardgameGroup(
+            Path csvFile,
+            Map<Long, String> csvBoardgameIdToBggLink,
+            Map<String, Long> bggLinkToBoardgameId) throws IOException {
         List<List<String>> records = readCsvFile(csvFile);
         List<BoardgameGroup> toSave = new ArrayList<>(records.size());
 
@@ -88,11 +104,13 @@ public class BoardgameTableCsvImportService {
             LocalDateTime createdAt = parseLocalDateTime(row.get(3));
             LocalDateTime updatedAt = parseLocalDateTime(row.get(4));
 
-            Boardgame boardgameRef = boardgameRepository.getReferenceById(boardgameId);
             toSave.add(BoardgameGroup.builder()
                     .id(null)
                     .groupId(groupId)
-                    .boardgame(boardgameRef)
+                    .boardgame(
+                            boardgameRepository.getReferenceById(
+                                    bggLinkToBoardgameId.get(
+                                            csvBoardgameIdToBggLink.get(boardgameId))))
                     .createdAt(createdAt)
                     .updatedAt(updatedAt)
                     .build());
@@ -103,7 +121,10 @@ public class BoardgameTableCsvImportService {
         }
     }
 
-    private void importBoardgamePlay(Path csvFile) throws IOException {
+    private void importBoardgamePlay(
+            Path csvFile,
+            Map<Long, String> csvBoardgameIdToBggLink,
+            Map<String, Long> bggLinkToBoardgameId) throws IOException {
         List<List<String>> records = readCsvFile(csvFile);
         List<BoardgamePlay> toSave = new ArrayList<>(records.size());
 
@@ -118,10 +139,12 @@ public class BoardgameTableCsvImportService {
             LocalDateTime createdAt = parseLocalDateTime(row.get(6));
             LocalDateTime updatedAt = parseLocalDateTime(row.get(7));
 
-            Boardgame boardgameRef = boardgameRepository.getReferenceById(boardgameId);
             toSave.add(BoardgamePlay.builder()
                     .id(null)
-                    .boardgame(boardgameRef)
+                    .boardgame(
+                            boardgameRepository.getReferenceById(
+                                    bggLinkToBoardgameId.get(
+                                            csvBoardgameIdToBggLink.get(boardgameId))))
                     .playDate(playDate)
                     .playerCount(playerCount)
                     .win(win)
@@ -134,6 +157,15 @@ public class BoardgameTableCsvImportService {
         if (!toSave.isEmpty()) {
             boardgamePlayRepository.saveAll(toSave);
         }
+    }
+
+    private Map<String, Long> loadBoardgameIdByBggLink() {
+        return boardgameRepository.findAll().stream()
+                .filter(bg -> bg.getBggLink() != null && !bg.getBggLink().isBlank())
+                .collect(Collectors.toMap(
+                        Boardgame::getBggLink,
+                        Boardgame::getId,
+                        (a, b) -> a));
     }
 
     private static void requireColumns(Path csvFile, List<String> row, int expectedColumns) {
