@@ -48,6 +48,9 @@ public class BoardgameGroup {
     @ToString.Exclude
     private Boardgame boardgame;
 
+    @Column(name = "GROUP_ID", nullable = false)
+    private Long groupId;
+
     @Column(name = "CREATED_AT", nullable = false)
     private LocalDateTime createdAt;
 

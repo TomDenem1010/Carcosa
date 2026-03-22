@@ -1,0 +1,188 @@
+{
+  "info": {
+    "_postman_id": "e6fc9906-8371-4903-a7ac-8afc66107a5f",
+    "name": "CARCOSA",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53395406",
+    "_collection_link": "https://go.postman.co/collection/53395406-e6fc9906-8371-4903-a7ac-8afc66107a5f?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "boardgame",
+      "item": [
+        {
+          "name": "boardgameGroup",
+          "item": [
+            {
+              "name": "/boardgameGroup/save",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"groupId\": \"1\",\r\n    \"boardgameId\":\"2\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "localhost:1515/boardgameGroup/save",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "1515",
+                  "path": [
+                    "boardgameGroup",
+                    "save"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "/boardgameGroup/findAll",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\":\"DreamEscape: Ooth Nargai Realm Expansion\",\r\n    \"type\":\"EXPANSION\",\r\n    \"status\":\"OWN\",\r\n    \"bggLink\":\"https://boardgamegeek.com/boardgameexpansion/460296/dreamescape-ooth-nargai-realm-expansion\"\r\n}"
+                },
+                "url": {
+                  "raw": "localhost:1515/boardgameGroup/findAll",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "1515",
+                  "path": [
+                    "boardgameGroup",
+                    "findAll"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "boardgamePlay",
+          "item": [
+            {
+              "name": "/boardgamePlay/findAll",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\":\"DreamEscape: Ooth Nargai Realm Expansion\",\r\n    \"type\":\"EXPANSION\",\r\n    \"status\":\"OWN\",\r\n    \"bggLink\":\"https://boardgamegeek.com/boardgameexpansion/460296/dreamescape-ooth-nargai-realm-expansion\"\r\n}"
+                },
+                "url": {
+                  "raw": "localhost:1515/boardgamePlay/findAll",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "1515",
+                  "path": [
+                    "boardgamePlay",
+                    "findAll"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "/boardgamePlay/save",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"boardgameId\": \"2\",\r\n    \"playDate\": \"2026-03-21\",\r\n    \"playerCount\": \"4\",\r\n    \"win\": \"SUCCESS\",\r\n    \"funScore\": \"4\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "localhost:1515/boardgamePlay/save",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "1515",
+                  "path": [
+                    "boardgamePlay",
+                    "save"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "/boardgame/save",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\":\"The Crew: Mission Deep Sea\",\r\n    \"type\":\"BASE_GAME\",\r\n    \"status\":\"OWN\",\r\n    \"bggLink\":\"https://boardgamegeek.com/boardgame/324856/the-crew-mission-deep-sea\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:1515/boardgame/save",
+              "host": [
+                "localhost"
+              ],
+              "port": "1515",
+              "path": [
+                "boardgame",
+                "save"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/boardgame/findAll",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\":\"DreamEscape: Ooth Nargai Realm Expansion\",\r\n    \"type\":\"EXPANSION\",\r\n    \"status\":\"OWN\",\r\n    \"bggLink\":\"https://boardgamegeek.com/boardgameexpansion/460296/dreamescape-ooth-nargai-realm-expansion\"\r\n}"
+            },
+            "url": {
+              "raw": "localhost:1515/boardgame/findAll",
+              "host": [
+                "localhost"
+              ],
+              "port": "1515",
+              "path": [
+                "boardgame",
+                "findAll"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

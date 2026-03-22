@@ -18,6 +18,7 @@ public class BoardgameGroupMapper {
     public BoardgameGroupDto toDto(BoardgameGroup entity) {
         return new BoardgameGroupDto(
                 entity.getId(),
+                entity.getGroupId(),
                 entity.getBoardgame().getId(),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt());
@@ -27,6 +28,7 @@ public class BoardgameGroupMapper {
         BoardgameGroup entity = new BoardgameGroup();
         entity.setId(dto.id());
         entity.setBoardgame(boardgameRef(dto.boardgameId()));
+        entity.setGroupId(dto.groupId());
         entity.setCreatedAt(dto.createdAt());
         entity.setUpdatedAt(dto.updatedAt());
         return entity;
