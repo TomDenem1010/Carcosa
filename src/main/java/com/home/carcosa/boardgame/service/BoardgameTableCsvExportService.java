@@ -6,6 +6,8 @@ import com.home.carcosa.boardgame.entity.BoardgamePlay;
 import com.home.carcosa.boardgame.repository.BoardgameGroupRepository;
 import com.home.carcosa.boardgame.repository.BoardgamePlayRepository;
 import com.home.carcosa.boardgame.repository.BoardgameRepository;
+
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,7 +50,7 @@ public class BoardgameTableCsvExportService {
             writer.write("ID,NAME,TYPE,STATUS,BGG_LINK,CREATED_AT,UPDATED_AT");
             writer.newLine();
 
-            for (Boardgame row : boardgameRepository.findAll()) {
+            for (Boardgame row : boardgameRepository.findAll(Sort.by("id"))) {
                 writer.write(joinCsv(
                         row.getId(),
                         row.getName(),
@@ -67,7 +69,7 @@ public class BoardgameTableCsvExportService {
             writer.write("ID,GROUP_ID,BOARDGAME_ID,CREATED_AT,UPDATED_AT");
             writer.newLine();
 
-            for (BoardgameGroup row : boardgameGroupRepository.findAll()) {
+            for (BoardgameGroup row : boardgameGroupRepository.findAll(Sort.by("id"))) {
                 writer.write(joinCsv(
                         row.getId(),
                         row.getGroupId(),
@@ -84,7 +86,7 @@ public class BoardgameTableCsvExportService {
             writer.write("ID,BOARDGAME_ID,PLAY_DATE,PLAYER_COUNT,WIN,FUN_SCORE,CREATED_AT,UPDATED_AT");
             writer.newLine();
 
-            for (BoardgamePlay row : boardgamePlayRepository.findAll()) {
+            for (BoardgamePlay row : boardgamePlayRepository.findAll(Sort.by("id"))) {
                 writer.write(joinCsv(
                         row.getId(),
                         row.getBoardgame().getId(),
