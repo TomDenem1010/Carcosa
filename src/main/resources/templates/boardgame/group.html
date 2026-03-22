@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Carcosa - Boardgame Groups</title>
+    <link rel="stylesheet" href="/app.css"/>
+</head>
+<body>
+<div class="app">
+    <aside class="sidebar" th:replace="~{fragments/nav :: nav(${activeMenu}, ${activeSubmenu})}"></aside>
+    <div class="content">
+        <main class="container">
+            <div class="row" style="justify-content: space-between;">
+                <h1>Group</h1>
+                <button type="button" class="btn primary" id="createGroupBtn">Create</button>
+            </div>
+
+            <section class="card" th:if="${#maps.isEmpty(groupsByGroupId)}">
+                <p>Nincs adat a BOARDGAME_GROUP táblában.</p>
+            </section>
+
+            <section class="card" th:if="${!#maps.isEmpty(groupsByGroupId)}" style="margin-top: 12px;">
+                <div class="scroll-area">
+                    <section th:each="entry : ${groupsByGroupId}" class="group-block">
+                        <ul>
+                            <li th:each="g : ${entry.value}">
+                                <span class="bg-name"
+                                      th:classappend="${g.boardgame.type.name() == 'EXPANSION' ? ' expansion' : ' basegame'}"
+                                      th:text="${g.boardgame.name}">Boardgame name</span>
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+            </section>
+
+            <dialog id="createGroupDialog">
+                <form id="createGroupForm">
+                    <h3 class="dialog-title">Create group entry</h3>
+
+                    <div class="row">
+                        <label>
+                            Group ID
+                            <input name="groupId" type="number" required/>
+                        </label>
+                    </div>
+
+                    <div class="row" style="margin-top: 10px;">
+                        <label>
+                            Boardgame
+                            <select name="boardgameId" required>
+                                <option value="">-- select --</option>
+                                <option th:each="bg : ${boardgames}" th:value="${bg.id}" th:text="${bg.name}"></option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="row" style="margin-top: 12px; justify-content: flex-end;">
+                        <button type="button" class="btn ghost" id="cancelGroupBtn">Cancel</button>
+                        <button type="submit" class="btn primary">Save</button>
+                    </div>
+                </form>
+            </dialog>
+        </main>
+    </div>
+</div>
+
+<script>
+    const groupDialog = document.getElementById('createGroupDialog');
+    document.getElementById('createGroupBtn').addEventListener('click', () => groupDialog.showModal());
+    document.getElementById('cancelGroupBtn').addEventListener('click', () => groupDialog.close());
+
+    document.getElementById('createGroupForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = e.target;
+
+        const groupId = Number(form.groupId.value);
+        const boardgameId = Number(form.boardgameId.value);
+        if (!groupId || !boardgameId) {
+            alert('Missing groupId or boardgame');
+            return;
+        }
+
+        const payload = {
+            id: null,
+            groupId,
+            boardgameId,
+            createdAt: null,
+            updatedAt: null
+        };
+
+        const res = await fetch('/boardgameGroup/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+            const text = await res.text();
+            alert('Save failed: ' + text);
+            return;
+        }
+
+        groupDialog.close();
+        window.location.reload();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Carcosa - Main</title>
+    <link rel="stylesheet" href="/app.css"/>
+</head>
+<body>
+<div class="app">
+    <aside class="sidebar" th:replace="~{fragments/nav :: nav('main', '')}"></aside>
+    <div class="content">
+        <main class="container">
+            <h1>Main</h1>
+            <div class="card">
+                <p>Üdv a Carcosa alkalmazásban.</p>
+                <p class="hint">A menüből válaszd ki a Boardgame nézeteket.</p>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

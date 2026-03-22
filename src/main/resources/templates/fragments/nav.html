@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav th:fragment="nav(activeMenu, activeSubmenu)">
+    <div class="brand">Carcosa</div>
+    <div class="nav">
+        <ul>
+            <li>
+                <div class="nav-label" th:classappend="${activeMenu} == 'main' ? ' active' : ''">Main</div>
+                <ul class="sub">
+                    <li>
+                        <a th:href="@{/main}" th:classappend="${activeMenu} == 'main' ? ' active' : ''">home</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <div class="nav-label" th:classappend="${activeMenu} == 'boardgame' ? ' active' : ''">Boardgame</div>
+                <ul class="sub">
+                    <li>
+                        <a th:href="@{/boardgame/boardgames}"
+                           th:classappend="${activeSubmenu} == 'boardgames' ? ' active' : ''">boardgames</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/boardgame/group}"
+                           th:classappend="${activeSubmenu} == 'group' ? ' active' : ''">group</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/boardgame/play}"
+                           th:classappend="${activeSubmenu} == 'play' ? ' active' : ''">play</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+</body>
+</html>
