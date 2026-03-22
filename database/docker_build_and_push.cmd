@@ -1,1 +1,1 @@
-powershell -NoProfile -ExecutionPolicy Bypass -Command "docker buildx build -t 'tomdenem1010/carcosa:1.0.0' -t 'tomdenem1010/carcosa:latest' --push ."
+powershell -NoProfile -ExecutionPolicy Bypass -Command "docker buildx build -t 'tomdenem1010/carcosa-db:1.0.0' -t 'tomdenem1010/carcosa-db:latest' --push ."

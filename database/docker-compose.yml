@@ -1,6 +1,6 @@
 services:
   oracle-xe:
-    image: tomdenem1010/carcosa:latest
+    image: tomdenem1010/carcosa-db:latest
     pull_policy: always
     container_name: carcosa-oracle-xe
     ports:
