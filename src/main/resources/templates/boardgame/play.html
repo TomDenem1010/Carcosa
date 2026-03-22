@@ -34,26 +34,20 @@
                     <table>
             <thead>
             <tr>
-                <th><a th:href="@{/boardgame/play(name=${name}, sort='id', dir=${sort=='id' and dir=='asc' ? 'desc' : 'asc'})}">ID</a></th>
                 <th><a th:href="@{/boardgame/play(name=${name}, sort='boardgame', dir=${sort=='boardgame' and dir=='asc' ? 'desc' : 'asc'})}">Boardgame</a></th>
                 <th><a th:href="@{/boardgame/play(name=${name}, sort='playDate', dir=${sort=='playDate' and dir=='asc' ? 'desc' : 'asc'})}">Play date</a></th>
                 <th><a th:href="@{/boardgame/play(name=${name}, sort='playerCount', dir=${sort=='playerCount' and dir=='asc' ? 'desc' : 'asc'})}">Player count</a></th>
                 <th><a th:href="@{/boardgame/play(name=${name}, sort='win', dir=${sort=='win' and dir=='asc' ? 'desc' : 'asc'})}">Win</a></th>
                 <th><a th:href="@{/boardgame/play(name=${name}, sort='funScore', dir=${sort=='funScore' and dir=='asc' ? 'desc' : 'asc'})}">Fun score</a></th>
-                <th><a th:href="@{/boardgame/play(name=${name}, sort='createdAt', dir=${sort=='createdAt' and dir=='asc' ? 'desc' : 'asc'})}">Created</a></th>
-                <th><a th:href="@{/boardgame/play(name=${name}, sort='updatedAt', dir=${sort=='updatedAt' and dir=='asc' ? 'desc' : 'asc'})}">Updated</a></th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="p : ${plays}">
-                <td th:text="${p.id}">Id</td>
                 <td th:text="${p.boardgame.name}">Boardgame</td>
                 <td th:text="${p.playDate}">PlayDate</td>
                 <td th:text="${p.playerCount}">Players</td>
                 <td th:text="${p.win}">Win</td>
                 <td th:text="${p.funScore}">Fun</td>
-                <td th:text="${p.createdAt}">Created</td>
-                <td th:text="${p.updatedAt}">Updated</td>
             </tr>
             </tbody>
                     </table>

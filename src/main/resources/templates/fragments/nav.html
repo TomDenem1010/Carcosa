@@ -1,8 +1,17 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<body>
-<nav th:fragment="nav(activeMenu, activeSubmenu)">
-    <div class="brand">Carcosa</div>
+<nav xmlns:th="http://www.thymeleaf.org" th:fragment="nav(activeMenu, activeSubmenu)">
+    <div class="theme-picker" aria-label="Theme picker">
+        <label>
+            Theme
+            <select id="themeSelect">
+                <option value="cyber-abyss">Cyber Abyss</option>
+                <option value="violet-rift">Violet Rift</option>
+                <option value="toxic-reactor">Toxic Reactor</option>
+                <option value="solar-flare">Solar Flare</option>
+                <option value="crimson-dusk">Crimson Dusk</option>
+            </select>
+        </label>
+    </div>
+
     <div class="nav">
         <ul>
             <li>
@@ -32,6 +41,40 @@
             </li>
         </ul>
     </div>
+
+    <script>
+        (function () {
+            const storageKey = 'carcosa.theme';
+
+            const applyTheme = (theme) => {
+                document.documentElement.dataset.theme = theme;
+            };
+
+            const init = () => {
+                const select = document.getElementById('themeSelect');
+                if (!select) return;
+
+                const saved = localStorage.getItem(storageKey);
+                const initial = saved || 'cyber-abyss';
+                applyTheme(initial);
+                select.value = initial;
+                if (!saved) {
+                    localStorage.setItem(storageKey, initial);
+                }
+
+                select.addEventListener('change', () => {
+                    const theme = select.value;
+                    applyTheme(theme);
+                    localStorage.setItem(storageKey, theme);
+                    window.location.reload();
+                });
+            };
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+        })();
+    </script>
 </nav>
-</body>
-</html>
