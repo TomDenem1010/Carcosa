@@ -21,8 +21,6 @@ import java.time.LocalDateTime;
 @Service
 public class BoardgameTableCsvExportService {
 
-    private static final Path DEFAULT_OUTPUT_DIRECTORY = Path.of("database", "boardgame", "csv");
-
     private final BoardgameRepository boardgameRepository;
     private final BoardgameGroupRepository boardgameGroupRepository;
     private final BoardgamePlayRepository boardgamePlayRepository;
@@ -37,12 +35,12 @@ public class BoardgameTableCsvExportService {
     }
 
     @Transactional(readOnly = true)
-    public void exportToCsv() throws IOException {
-        Files.createDirectories(DEFAULT_OUTPUT_DIRECTORY);
+    public void exportToCsv(Path outputDirectory) throws IOException {
+        Files.createDirectories(outputDirectory);
 
-        exportBoardgame(DEFAULT_OUTPUT_DIRECTORY.resolve("boardgame.csv"));
-        exportBoardgameGroup(DEFAULT_OUTPUT_DIRECTORY.resolve("boardgame_group.csv"));
-        exportBoardgamePlay(DEFAULT_OUTPUT_DIRECTORY.resolve("boardgame_play.csv"));
+        exportBoardgame(outputDirectory.resolve("boardgame.csv"));
+        exportBoardgameGroup(outputDirectory.resolve("boardgame_group.csv"));
+        exportBoardgamePlay(outputDirectory.resolve("boardgame_play.csv"));
     }
 
     private void exportBoardgame(Path outputFile) throws IOException {
