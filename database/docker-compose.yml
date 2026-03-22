@@ -1,9 +1,7 @@
 services:
   oracle-xe:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: carcosa-oracle-xe:21
+    image: tomdenem1010/carcosa:latest
+    pull_policy: always
     container_name: carcosa-oracle-xe
     ports:
       - "1521:1521"  # Oracle listener
