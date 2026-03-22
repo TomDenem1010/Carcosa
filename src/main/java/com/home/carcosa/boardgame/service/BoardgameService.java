@@ -1,0 +1,35 @@
+package com.home.carcosa.boardgame.service;
+
+import com.home.carcosa.boardgame.dto.BoardgameDto;
+import com.home.carcosa.boardgame.entity.Boardgame;
+import com.home.carcosa.boardgame.mapper.BoardgameMapper;
+import com.home.carcosa.boardgame.repository.BoardgameRepository;
+
+import lombok.AllArgsConstructor;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@AllArgsConstructor
+public class BoardgameService {
+
+    private final BoardgameRepository boardgameRepository;
+    private final BoardgameMapper boardgameMapper;
+
+    @Transactional
+    public BoardgameDto save(BoardgameDto input) {
+        Boardgame entity = boardgameMapper.toEntity(input);
+        Boardgame saved = boardgameRepository.save(entity);
+        return boardgameMapper.toDto(saved);
+    }
+
+    @Transactional(readOnly = true)
+    public List<BoardgameDto> findAll() {
+        return boardgameRepository.findAll().stream()
+                .map(boardgameMapper::toDto)
+                .toList();
+    }
+}
