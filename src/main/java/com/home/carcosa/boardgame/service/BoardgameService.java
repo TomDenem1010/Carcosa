@@ -11,6 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
@@ -24,6 +27,7 @@ public class BoardgameService {
     private final BoardgameMapper boardgameMapper;
 
     @Transactional
+    @CacheEvict(cacheNames = { "boardgame.findAll.dto", "boardgame.findAll.entity", "boardgame.findAll.entity.sorted", "boardgame.findByName" }, allEntries = true)
     public BoardgameDto save(BoardgameDto input) {
         log.debug("Saving boardgame: {}", input);
         if (input.id() != null) {
@@ -45,6 +49,7 @@ public class BoardgameService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(cacheNames = "boardgame.findAll.dto")
     public List<BoardgameDto> findAll() {
         log.debug("Finding all boardgames");
         return boardgameRepository.findAll().stream()
@@ -53,12 +58,14 @@ public class BoardgameService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(cacheNames = "boardgame.findAll.entity.sorted", key = "#sort == null ? 'null' : #sort.toString()")
     public List<Boardgame> findAll(Sort sort) {
         log.debug("Finding all boardgames with sort: {}", sort);
         return boardgameRepository.findAll(sort);
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(cacheNames = "boardgame.findByName", key = "#name + '|' + (#sort == null ? 'null' : #sort.toString())")
     public List<Boardgame> findByNameContainingIgnoreCase(String name, Sort sort) {
         log.debug("Finding boardgames with name containing '{}' and sort: {}", name, sort);
         return boardgameRepository.findByNameContainingIgnoreCase(name, sort);

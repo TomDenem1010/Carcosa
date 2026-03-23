@@ -11,6 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
@@ -24,6 +27,7 @@ public class BoardgameGroupService {
     private final BoardgameGroupMapper boardgameGroupMapper;
 
     @Transactional
+    @CacheEvict(cacheNames = { "boardgameGroup.findAll.dto", "boardgameGroup.findAll.entity.sorted" }, allEntries = true)
     public BoardgameGroupDto save(BoardgameGroupDto input) {
         log.debug("Saving boardgame group: {}", input);
         BoardgameGroup entity = boardgameGroupMapper.toEntity(input);
@@ -32,6 +36,7 @@ public class BoardgameGroupService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(cacheNames = "boardgameGroup.findAll.dto")
     public List<BoardgameGroupDto> findAll() {
         log.debug("Finding all boardgame groups");
         return boardgameGroupRepository.findAll().stream()
@@ -40,6 +45,7 @@ public class BoardgameGroupService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(cacheNames = "boardgameGroup.findAll.entity.sorted", key = "#sort == null ? 'null' : #sort.toString()")
     public List<BoardgameGroup> findAll(Sort sort) {
         log.debug("Finding all boardgame groups with sort: {}", sort);
         return boardgameGroupRepository.findAll(sort);
