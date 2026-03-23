@@ -38,6 +38,7 @@
                     <a th:href="@{/boardgame/boardgames(name=${name}, sort='name', dir=${dir=='asc' ? 'desc' : 'asc'})}">Name</a>
                 </th>
                 <th>Link</th>
+                <th>Modify</th>
             </tr>
             </thead>
             <tbody>
@@ -50,6 +51,12 @@
                 <td>
                     <a th:href="${bg.bggLink}" target="_blank" rel="noopener noreferrer">link</a>
                 </td>
+                <td>
+                    <button type="button" class="btn ghost modify-btn"
+                            th:attr="data-id=${bg.id},data-name=${bg.name},data-type=${bg.type.name()},data-status=${bg.status.name()},data-bgg-link=${bg.bggLink}">
+                        Modify
+                    </button>
+                </td>
             </tr>
             </tbody>
                     </table>
@@ -59,6 +66,8 @@
             <dialog id="createDialog">
                 <form id="createForm">
                     <h3 class="dialog-title">Create boardgame</h3>
+
+                    <input name="id" type="hidden"/>
 
                     <div class="row">
                         <label>
@@ -110,14 +119,36 @@
 
 <script>
     const dialog = document.getElementById('createDialog');
-    document.getElementById('createBtn').addEventListener('click', () => dialog.showModal());
+    document.getElementById('createBtn').addEventListener('click', () => {
+        const form = document.getElementById('createForm');
+        form.reset();
+        form.id.value = '';
+        dialog.showModal();
+    });
     document.getElementById('cancelBtn').addEventListener('click', () => dialog.close());
+
+    document.querySelectorAll('.modify-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const form = document.getElementById('createForm');
+            form.reset();
+
+            form.id.value = btn.dataset.id || '';
+            form.name.value = btn.dataset.name || '';
+            form.type.value = btn.dataset.type || '';
+            form.status.value = btn.dataset.status || '';
+            form.bggLink.value = btn.dataset.bggLink || '';
+
+            dialog.showModal();
+        });
+    });
 
     document.getElementById('createForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const form = e.target;
+        const idRaw = form.id.value;
+        const id = idRaw ? Number(idRaw) : null;
         const payload = {
-            id: null,
+            id,
             name: form.name.value,
             type: form.type.value,
             status: form.status.value,

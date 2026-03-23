@@ -23,6 +23,17 @@ public class BoardgameService {
 
     @Transactional
     public BoardgameDto save(BoardgameDto input) {
+        if (input.id() != null) {
+            Boardgame existing = boardgameRepository.findById(input.id())
+                    .orElseThrow(() -> new IllegalArgumentException("Boardgame not found: id=" + input.id()));
+            existing.setName(input.name());
+            existing.setType(input.type());
+            existing.setStatus(input.status());
+            existing.setBggLink(input.bggLink());
+            Boardgame saved = boardgameRepository.save(existing);
+            return boardgameMapper.toDto(saved);
+        }
+
         Boardgame entity = boardgameMapper.toEntity(input);
         Boardgame saved = boardgameRepository.save(entity);
         return boardgameMapper.toDto(saved);
