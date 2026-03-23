@@ -73,6 +73,9 @@ html[data-theme="crimson-dusk"] {
 
 html, body {
     height: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    overscroll-behavior: none;
 }
 
 body {
@@ -97,15 +100,20 @@ a:hover {
 }
 
 .app {
+    position: fixed;
+    inset: 0;
     display: grid;
     grid-template-columns: 260px 1fr;
-    min-height: 100vh;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
 }
 
 .sidebar {
     position: sticky;
     top: 0;
-    height: 100vh;
+    height: 100%;
+    overflow: hidden;
     padding: 18px;
     border-right: 1px solid var(--border);
     background: linear-gradient(180deg, rgba(5, 6, 10, 0.92), rgba(5, 6, 10, 0.72));
@@ -184,6 +192,8 @@ a:hover {
     padding: 26px 28px;
     display: flex;
     justify-content: center;
+    height: 100%;
+    overflow: hidden;
 }
 
 .container {
@@ -373,6 +383,7 @@ dialog::backdrop {
     position: relative;
     max-height: calc(100vh - 240px);
     overflow: auto;
+    overscroll-behavior: none;
     padding-right: 6px;
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: var(--radius);
