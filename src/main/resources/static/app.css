@@ -129,12 +129,11 @@ a:hover {
 }
 
 .theme-picker {
-    position: fixed;
+    position: sticky;
     top: 18px;
-    right: 18px;
-    z-index: 1000;
-    display: flex;
-    align-items: flex-end;
+    z-index: 10;
+    display: block;
+    margin-bottom: 14px;
 }
 
 .theme-picker label {
@@ -145,7 +144,33 @@ a:hover {
 }
 
 .theme-picker select {
-    width: 220px;
+    width: 100%;
+    max-width: 220px;
+}
+
+@media (min-width: 1400px) {
+    .theme-picker {
+        position: fixed;
+        top: 18px;
+        right: 18px;
+        z-index: 1000;
+        margin-bottom: 0;
+    }
+
+    .theme-picker select {
+        width: 220px;
+        max-width: 220px;
+    }
+}
+
+@media (max-width: 900px) {
+    .content {
+        padding: 16px 16px;
+    }
+
+    .container {
+        width: 100%;
+    }
 }
 
 .nav {
