@@ -6,6 +6,9 @@ import com.home.carcosa.boardgame.entity.BoardgamePlay;
 import com.home.carcosa.boardgame.service.BoardgameGroupService;
 import com.home.carcosa.boardgame.service.BoardgamePlayService;
 import com.home.carcosa.boardgame.service.BoardgameService;
+
+import lombok.AllArgsConstructor;
+
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,20 +26,12 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/boardgame")
+@AllArgsConstructor
 public class BoardgamePageController {
 
     private final BoardgameService boardgameService;
     private final BoardgameGroupService boardgameGroupService;
     private final BoardgamePlayService boardgamePlayService;
-
-    public BoardgamePageController(
-            BoardgameService boardgameService,
-            BoardgameGroupService boardgameGroupService,
-            BoardgamePlayService boardgamePlayService) {
-        this.boardgameService = boardgameService;
-        this.boardgameGroupService = boardgameGroupService;
-        this.boardgamePlayService = boardgamePlayService;
-    }
 
     @GetMapping("/boardgames")
     public String boardgames(
@@ -68,19 +63,19 @@ public class BoardgamePageController {
                 Sort.by(Sort.Order.asc("groupId"), Sort.Order.asc("boardgame.name")));
 
         long nextGroupId = groups.stream()
-            .map(BoardgameGroup::getGroupId)
-            .filter(Objects::nonNull)
-            .max(Long::compareTo)
-            .map(max -> max + 1)
-            .orElse(1L);
+                .map(BoardgameGroup::getGroupId)
+                .filter(Objects::nonNull)
+                .max(Long::compareTo)
+                .map(max -> max + 1)
+                .orElse(1L);
 
         Set<Long> groupedBoardgameIds = groups.stream()
-            .map(g -> g.getBoardgame().getId())
-            .collect(Collectors.toSet());
+                .map(g -> g.getBoardgame().getId())
+                .collect(Collectors.toSet());
 
         List<Boardgame> boardgames = boardgameService.findAll(Sort.by(Sort.Direction.ASC, "name")).stream()
-            .filter(bg -> bg.getId() != null && !groupedBoardgameIds.contains(bg.getId()))
-            .toList();
+                .filter(bg -> bg.getId() != null && !groupedBoardgameIds.contains(bg.getId()))
+                .toList();
 
         Map<Long, List<BoardgameGroup>> byGroupId = new LinkedHashMap<>();
         for (BoardgameGroup group : groups) {
