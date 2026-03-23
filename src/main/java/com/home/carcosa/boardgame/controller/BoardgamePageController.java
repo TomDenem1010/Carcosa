@@ -3,9 +3,9 @@ package com.home.carcosa.boardgame.controller;
 import com.home.carcosa.boardgame.entity.Boardgame;
 import com.home.carcosa.boardgame.entity.BoardgameGroup;
 import com.home.carcosa.boardgame.entity.BoardgamePlay;
-import com.home.carcosa.boardgame.repository.BoardgameGroupRepository;
-import com.home.carcosa.boardgame.repository.BoardgamePlayRepository;
-import com.home.carcosa.boardgame.repository.BoardgameRepository;
+import com.home.carcosa.boardgame.service.BoardgameGroupService;
+import com.home.carcosa.boardgame.service.BoardgamePlayService;
+import com.home.carcosa.boardgame.service.BoardgameService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,17 +22,17 @@ import java.util.Map;
 @RequestMapping("/boardgame")
 public class BoardgamePageController {
 
-    private final BoardgameRepository boardgameRepository;
-    private final BoardgameGroupRepository boardgameGroupRepository;
-    private final BoardgamePlayRepository boardgamePlayRepository;
+    private final BoardgameService boardgameService;
+    private final BoardgameGroupService boardgameGroupService;
+    private final BoardgamePlayService boardgamePlayService;
 
     public BoardgamePageController(
-            BoardgameRepository boardgameRepository,
-            BoardgameGroupRepository boardgameGroupRepository,
-            BoardgamePlayRepository boardgamePlayRepository) {
-        this.boardgameRepository = boardgameRepository;
-        this.boardgameGroupRepository = boardgameGroupRepository;
-        this.boardgamePlayRepository = boardgamePlayRepository;
+            BoardgameService boardgameService,
+            BoardgameGroupService boardgameGroupService,
+            BoardgamePlayService boardgamePlayService) {
+        this.boardgameService = boardgameService;
+        this.boardgameGroupService = boardgameGroupService;
+        this.boardgamePlayService = boardgamePlayService;
     }
 
     @GetMapping("/boardgames")
@@ -46,9 +46,9 @@ public class BoardgamePageController {
 
         List<Boardgame> boardgames;
         if (name != null && !name.isBlank()) {
-            boardgames = boardgameRepository.findByNameContainingIgnoreCase(name.trim(), sortSpec);
+            boardgames = boardgameService.findByNameContainingIgnoreCase(name.trim(), sortSpec);
         } else {
-            boardgames = boardgameRepository.findAll(sortSpec);
+            boardgames = boardgameService.findAll(sortSpec);
         }
         model.addAttribute("activeMenu", "boardgame");
         model.addAttribute("activeSubmenu", "boardgames");
@@ -61,8 +61,8 @@ public class BoardgamePageController {
 
     @GetMapping("/group")
     public String group(Model model) {
-        List<Boardgame> boardgames = boardgameRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
-        List<BoardgameGroup> groups = boardgameGroupRepository.findAll(
+        List<Boardgame> boardgames = boardgameService.findAll(Sort.by(Sort.Direction.ASC, "name"));
+        List<BoardgameGroup> groups = boardgameGroupService.findAll(
                 Sort.by(Sort.Order.asc("groupId"), Sort.Order.asc("boardgame.name")));
 
         Map<Long, List<BoardgameGroup>> byGroupId = new LinkedHashMap<>();
@@ -82,16 +82,16 @@ public class BoardgamePageController {
             @RequestParam(name = "sort", required = false, defaultValue = "playDate") String sort,
             @RequestParam(name = "dir", required = false, defaultValue = "desc") String dir,
             Model model) {
-        List<Boardgame> boardgames = boardgameRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
+        List<Boardgame> boardgames = boardgameService.findAll(Sort.by(Sort.Direction.ASC, "name"));
         Sort.Direction direction = "asc".equalsIgnoreCase(dir) ? Sort.Direction.ASC : Sort.Direction.DESC;
         String sortProperty = mapSortProperty(sort);
         Sort sortSpec = Sort.by(direction, sortProperty);
 
         List<BoardgamePlay> plays;
         if (name != null && !name.isBlank()) {
-            plays = boardgamePlayRepository.findByBoardgame_NameContainingIgnoreCase(name.trim(), sortSpec);
+            plays = boardgamePlayService.findByBoardgameNameContainingIgnoreCase(name.trim(), sortSpec);
         } else {
-            plays = boardgamePlayRepository.findAll(sortSpec);
+            plays = boardgamePlayService.findAll(sortSpec);
         }
 
         model.addAttribute("activeMenu", "boardgame");

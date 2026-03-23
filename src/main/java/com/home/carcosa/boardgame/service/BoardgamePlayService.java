@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.data.domain.Sort;
+
 import java.util.List;
 
 @Service
@@ -31,5 +33,15 @@ public class BoardgamePlayService {
         return boardgamePlayRepository.findAll().stream()
                 .map(boardgamePlayMapper::toDto)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<BoardgamePlay> findAll(Sort sort) {
+        return boardgamePlayRepository.findAll(sort);
+    }
+
+    @Transactional(readOnly = true)
+    public List<BoardgamePlay> findByBoardgameNameContainingIgnoreCase(String name, Sort sort) {
+        return boardgamePlayRepository.findByBoardgame_NameContainingIgnoreCase(name, sort);
     }
 }
