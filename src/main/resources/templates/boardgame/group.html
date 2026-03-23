@@ -15,6 +15,8 @@
                 <button type="button" class="btn primary" id="createGroupBtn">Create</button>
             </div>
 
+            <p class="hint">Next group ID: <span th:text="${nextGroupId}"></span></p>
+
             <section class="card" th:if="${#maps.isEmpty(groupsByGroupId)}">
                 <p>Nincs adat a BOARDGAME_GROUP táblában.</p>
             </section>

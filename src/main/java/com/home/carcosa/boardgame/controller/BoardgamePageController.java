@@ -17,6 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -66,6 +67,13 @@ public class BoardgamePageController {
         List<BoardgameGroup> groups = boardgameGroupService.findAll(
                 Sort.by(Sort.Order.asc("groupId"), Sort.Order.asc("boardgame.name")));
 
+        long nextGroupId = groups.stream()
+            .map(BoardgameGroup::getGroupId)
+            .filter(Objects::nonNull)
+            .max(Long::compareTo)
+            .map(max -> max + 1)
+            .orElse(1L);
+
         Set<Long> groupedBoardgameIds = groups.stream()
             .map(g -> g.getBoardgame().getId())
             .collect(Collectors.toSet());
@@ -82,6 +90,7 @@ public class BoardgamePageController {
         model.addAttribute("activeSubmenu", "group");
         model.addAttribute("boardgames", boardgames);
         model.addAttribute("groupsByGroupId", byGroupId);
+        model.addAttribute("nextGroupId", nextGroupId);
         return "boardgame/group";
     }
 
