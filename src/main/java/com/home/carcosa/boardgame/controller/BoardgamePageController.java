@@ -17,6 +17,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/boardgame")
@@ -61,9 +63,16 @@ public class BoardgamePageController {
 
     @GetMapping("/group")
     public String group(Model model) {
-        List<Boardgame> boardgames = boardgameService.findAll(Sort.by(Sort.Direction.ASC, "name"));
         List<BoardgameGroup> groups = boardgameGroupService.findAll(
                 Sort.by(Sort.Order.asc("groupId"), Sort.Order.asc("boardgame.name")));
+
+        Set<Long> groupedBoardgameIds = groups.stream()
+            .map(g -> g.getBoardgame().getId())
+            .collect(Collectors.toSet());
+
+        List<Boardgame> boardgames = boardgameService.findAll(Sort.by(Sort.Direction.ASC, "name")).stream()
+            .filter(bg -> bg.getId() != null && !groupedBoardgameIds.contains(bg.getId()))
+            .toList();
 
         Map<Long, List<BoardgameGroup>> byGroupId = new LinkedHashMap<>();
         for (BoardgameGroup group : groups) {
