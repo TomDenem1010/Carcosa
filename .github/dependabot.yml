@@ -1,0 +1,51 @@
+version: 2
+
+updates:
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "daily"
+
+    open-pull-requests-limit: 10
+
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+
+    labels:
+      - "dependencies"
+      - "java"
+      - "maven"
+
+    groups:
+      spring-boot:
+        patterns:
+          - "org.springframework.boot:*"
+          - "org.springframework:*"
+
+      testing:
+        patterns:
+          - "org.junit:*"
+          - "org.mockito:*"
+          - "org.assertj:*"
+
+      logging:
+        patterns:
+          - "ch.qos.logback:*"
+          - "org.slf4j:*"
+
+      minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+      majors:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
+
+    reviewers:
+      - "TomDenem1010"
