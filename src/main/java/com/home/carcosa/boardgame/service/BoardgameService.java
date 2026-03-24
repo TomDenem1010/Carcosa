@@ -27,7 +27,8 @@ public class BoardgameService {
     private final BoardgameMapper boardgameMapper;
 
     @Transactional
-    @CacheEvict(cacheNames = { "boardgame.findAll.dto", "boardgame.findAll.entity", "boardgame.findAll.entity.sorted", "boardgame.findByName" }, allEntries = true)
+    @CacheEvict(cacheNames = { "boardgame.findAll.dto", "boardgame.findAll.entity", "boardgame.findAll.entity.sorted",
+            "boardgame.findByName", "boardgamePage.boardgames", "boardgamePage.group", "boardgamePage.play" }, allEntries = true)
     public BoardgameDto save(BoardgameDto input) {
         log.debug("Saving boardgame: {}", input);
         if (input.id() != null) {

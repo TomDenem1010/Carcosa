@@ -27,7 +27,8 @@ public class BoardgamePlayService {
     private final BoardgamePlayMapper boardgamePlayMapper;
 
     @Transactional
-    @CacheEvict(cacheNames = { "boardgamePlay.findAll.dto", "boardgamePlay.findAll.entity.sorted", "boardgamePlay.findByBoardgameName" }, allEntries = true)
+    @CacheEvict(cacheNames = { "boardgamePlay.findAll.dto", "boardgamePlay.findAll.entity.sorted",
+            "boardgamePlay.findByBoardgameName", "boardgamePage.play" }, allEntries = true)
     public BoardgamePlayDto save(BoardgamePlayDto input) {
         log.debug("Saving boardgame play: {}", input);
         BoardgamePlay entity = boardgamePlayMapper.toEntity(input);

@@ -19,6 +19,12 @@ public class CacheConfig {
                 "boardgameGroup.findAll.entity.sorted",
                 "boardgamePlay.findAll.dto",
                 "boardgamePlay.findAll.entity.sorted",
-                "boardgamePlay.findByBoardgameName");
+                "boardgamePlay.findByBoardgameName",
+                "boardgamePage.boardgames",
+                "boardgamePage.group",
+                "boardgamePage.play",
+                "boardgamePage.enums.types",
+                "boardgamePage.enums.statuses",
+                "boardgamePage.enums.playWins");
     }
 }

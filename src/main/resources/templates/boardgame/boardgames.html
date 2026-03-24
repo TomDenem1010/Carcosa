@@ -81,8 +81,7 @@
                             Type
                             <select name="type" required>
                                 <option value="">-- select --</option>
-                                <option value="BASEGAME">BASEGAME</option>
-                                <option value="EXPANSION">EXPANSION</option>
+                                <option th:each="t : ${boardgameTypes}" th:value="${t.name()}" th:text="${t.name()}"></option>
                             </select>
                         </label>
                     </div>
@@ -92,10 +91,7 @@
                             Status
                             <select name="status" required>
                                 <option value="">-- select --</option>
-                                <option value="OWN">OWN</option>
-                                <option value="SOLD">SOLD</option>
-                                <option value="THINKINGTOSELL">THINKINGTOSELL</option>
-                                <option value="THINKINGTOBUY">THINKINGTOBUY</option>
+                                <option th:each="s : ${boardgameStatuses}" th:value="${s.name()}" th:text="${s.name()}"></option>
                             </select>
                         </label>
                     </div>

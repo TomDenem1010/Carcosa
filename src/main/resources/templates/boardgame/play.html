@@ -87,8 +87,7 @@
                             Win
                             <select name="win" required>
                                 <option value="">-- select --</option>
-                                <option value="SUCCESS">SUCCESS</option>
-                                <option value="FAILURE">FAILURE</option>
+                                <option th:each="w : ${boardgamePlayWins}" th:value="${w.name()}" th:text="${w.name()}"></option>
                             </select>
                         </label>
                     </div>

@@ -27,7 +27,8 @@ public class BoardgameGroupService {
     private final BoardgameGroupMapper boardgameGroupMapper;
 
     @Transactional
-    @CacheEvict(cacheNames = { "boardgameGroup.findAll.dto", "boardgameGroup.findAll.entity.sorted" }, allEntries = true)
+    @CacheEvict(cacheNames = { "boardgameGroup.findAll.dto", "boardgameGroup.findAll.entity.sorted",
+            "boardgamePage.group" }, allEntries = true)
     public BoardgameGroupDto save(BoardgameGroupDto input) {
         log.debug("Saving boardgame group: {}", input);
         BoardgameGroup entity = boardgameGroupMapper.toEntity(input);
