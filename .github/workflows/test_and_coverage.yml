@@ -1,0 +1,64 @@
+name: Test and Coverage
+
+on:
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Run tests & generate coverage
+        run: mvn verify
+
+      - name: Log coverage summary
+        run: |
+          python3 - <<'EOF'
+          import xml.etree.ElementTree as ET
+          import os, sys
+
+          report_path = 'target/site/jacoco/jacoco.xml'
+          if not os.path.exists(report_path):
+              print("Coverage report not found — skipping summary.")
+              sys.exit(0)
+
+          tree = ET.parse(report_path)
+          root = tree.getroot()
+
+          counters = {c.get('type'): c for c in root.findall('counter')}
+          order = ['INSTRUCTION', 'BRANCH', 'LINE', 'COMPLEXITY', 'METHOD', 'CLASS']
+
+          print("")
+          print("╔══════════════════╦══════════╦══════════╦════════════╗")
+          print("║ Type             ║   Missed ║    Total ║   Coverage ║")
+          print("╠══════════════════╬══════════╬══════════╬════════════╣")
+          for ctype in order:
+              if ctype in counters:
+                  c = counters[ctype]
+                  missed  = int(c.get('missed'))
+                  covered = int(c.get('covered'))
+                  total   = missed + covered
+                  pct     = (covered / total * 100) if total > 0 else 0.0
+                  print(f"║ {ctype:<16} ║ {missed:>8} ║ {total:>8} ║ {pct:>9.1f}% ║")
+          print("╚══════════════════╩══════════╩══════════╩════════════╝")
+          print("")
+          EOF
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-coverage-report
+          path: target/site/jacoco/
